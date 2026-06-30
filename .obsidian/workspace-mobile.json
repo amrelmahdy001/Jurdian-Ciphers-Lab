@@ -8,7 +8,37 @@
         "type": "tabs",
         "children": [
           {
-            "id": "e44ec30ba7530900",
+            "id": "6b2b176639337784",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Under review/00-Architecture-Review.md",
+                "mode": "source",
+                "source": false
+              },
+              "pinned": true,
+              "icon": "lucide-file",
+              "title": "00-Architecture-Review"
+            }
+          },
+          {
+            "id": "8a5ff267024a1a14",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "00-Architecture-Review.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "00-Architecture-Review"
+            }
+          },
+          {
+            "id": "93f3ce067e967ac7",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -20,8 +50,51 @@
               "icon": "lucide-file",
               "title": "README"
             }
+          },
+          {
+            "id": "cc393f459b315642",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "docs/ciphers/classical/shift/Untitled.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Untitled"
+            }
+          },
+          {
+            "id": "f59237d8000df11a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "docs/ciphers/classical/shift/Cipher template.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Cipher template"
+            }
+          },
+          {
+            "id": "6889d802a5b8d2f0",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Untitled.md",
+                "mode": "preview",
+                "source": true
+              },
+              "icon": "lucide-file",
+              "title": "Untitled"
+            }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "vertical"
@@ -49,7 +122,7 @@
         "state": {
           "type": "search",
           "state": {
-            "query": "",
+            "query": "tag:cipher, classical, substitution, shift, puzzle, educational",
             "matchingCase": false,
             "explainSearch": false,
             "collapseAll": false,
@@ -82,7 +155,7 @@
           "type": "all-properties",
           "state": {
             "sortOrder": "frequency",
-            "showSearch": false,
+            "showSearch": true,
             "searchQuery": ""
           },
           "icon": "lucide-archive",
@@ -100,7 +173,7 @@
         }
       }
     ],
-    "currentTab": 0
+    "currentTab": 1
   },
   "right": {
     "id": "e2073730321b7bbc",
@@ -112,7 +185,7 @@
         "state": {
           "type": "backlink",
           "state": {
-            "file": "README.md",
+            "file": "Under review/00-Architecture-Review.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -131,7 +204,7 @@
         "state": {
           "type": "outgoing-link",
           "state": {
-            "file": "README.md",
+            "file": "docs/ciphers/classical/shift/Cipher template.md",
             "linksCollapsed": false,
             "unlinkedCollapsed": true
           },
@@ -145,7 +218,7 @@
         "state": {
           "type": "outline",
           "state": {
-            "file": "README.md",
+            "file": "Under review/00-Architecture-Review.md",
             "followCursor": false,
             "showSearch": false,
             "searchQuery": ""
@@ -155,7 +228,7 @@
         }
       }
     ],
-    "currentTab": 0
+    "currentTab": 1
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -168,6 +241,38 @@
       "bases:Create new base": false
     }
   },
-  "active": "e44ec30ba7530900",
-  "lastOpenFiles": []
+  "active": "f59237d8000df11a",
+  "lastOpenFiles": [
+    "link for web tool.md",
+    "docs/ciphers/classical/shift/Cipher template.md",
+    "Untitled.md",
+    "Under review/template-cipher-article.md",
+    "docs/ciphers/classical/shift/Untitled.md",
+    "docs/ciphers/classical/shift/Untitled 1.md",
+    "One-Time Pad.md",
+    "Under review/00-Architecture-Review.md",
+    "docs/ciphers/classical/shift",
+    "docs/ciphers/classical",
+    "docs/ciphers",
+    "00-Architecture-Review.md",
+    "CHANGELOG.md",
+    "README.md",
+    "Under review/MOC-Master.md",
+    "2025-06-29.md",
+    "docs",
+    "Under review/README.md",
+    "Under review/README 1.md",
+    "Under review",
+    "cipher-identification-guide.md",
+    "Cryptography-Master-Index.md",
+    "MOC-Writing-Systems.md",
+    "template-tool-article.md",
+    "template-moc.md",
+    "README 1.md",
+    "template-cipher-article.md",
+    "Wiki/Untitled.md",
+    "Untitled 1.md",
+    "CONTRIBUTING.md",
+    "MOC-Ciphers.md"
+  ]
 }
