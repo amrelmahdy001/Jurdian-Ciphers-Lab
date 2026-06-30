@@ -104,4 +104,4 @@ The format is inspired by **Keep a Changelog**, and the project follows Semantic
 
 | Version | Status | Release Date |
 |----------|--------|--------------|
-| 0.1.0 | Initial Release | 2026-06-29 |
+| 0.1.| Initial Release | 2026-06-29 |
