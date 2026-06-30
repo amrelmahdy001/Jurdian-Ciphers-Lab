@@ -1,24 +1,33 @@
 ---
-title: Caesar Cipher
-aliases: Shift Cipher, Caesar's Cipher
-category: Classical
-family: Substitution
-difficulty: ★☆☆☆☆
-era: Ancient
-security: Very Low
-key_required: Yes
-key_type: Integer (shift value)
-key_space: 26 (for English alphabet)
-input: Text
-output: Text
-tags: cipher, classical, substitution, shift, puzzle, educational
+title:
+aliases:
+article-type: Cipher · Encoding · Hash Function · Concept · Protocol · Analysis Method · Steganography · Compression · Writing System · Communication Code · Number System · Puzzle · Tool · Reference
+class: Ancient · Classical · Mechanical · Modern
+category: Substitution · Transposition · Fractionation · Product Cipher · Block Cipher · Stream Cipher · One-Time Pad
+technique: Shift · Monoalphabetic · Polyalphabetic · Homophonic · Polygraphic · Rail Fence · Columnar · Route · Polybius Square · Matrix · Cipher Disk · Rotor Machine · Feistel · SPN · XOR · LFSR
+alphabet:
+  - Uppercase
+  - Lowercase
+  - Numbers
+  - Spaces
+  - Punctuation
+  - Symbols
+  - Unicode
+  - Binary 
+keys: None · 1 Key · 2 Keys · Multiple Keys
+difficulty: ★☆☆☆☆ → ★★★★★
+tags:
+status: Draft · Review · Complete
+created: 2026-06-30
+updated: 2026-06-30
 ---
 
 # Caesar Cipher
 
 > **A simple substitution cipher where each letter is shifted by a fixed number of positions in the alphabet.**
 
-[[Tool - Caesar Cipher]]
+> [!tip] Browser Tool
+> [[Tool - Caesar Cipher]]
 
 ---
 

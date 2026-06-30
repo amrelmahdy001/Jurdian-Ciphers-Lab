@@ -1,32 +1,35 @@
 ---
-title: Caesar Cipher
+title:
 aliases:
-  - Caesar Shift
-  - Shift Cipher (Caesar)
-category: Cipher
-family: Shift Cipher
-type: Monoalphabetic Substitution
-inventor: Julius Caesar
-invented: c. 58–50 BC
-alphabet: Latin Alphabet
-key: Integer (0–25)
-reversible: true
-security: Very Weak
-difficulty: Beginner
-status: Complete
+article-type:
+class:
+category:
+technique:
+alphabet:
+keys:
+difficulty:
 tags:
-  - cipher
-  - classical
-  - shift
-  - substitution
-  - caesar
-related:
-  - Shift Cipher
-  - ROT13
-  - Affine Cipher
-  - Frequency Analysis
+status:
+created:
+updated:
 ---
-
+> [!note] Metadata Reference
+>
+> **article-type** → Cipher · Encoding · Hash Function · Concept · Protocol · Analysis Method · Steganography · Compression · Writing System · Communication Code · Number System · Puzzle · Tool · Reference
+>
+> **class** → Ancient · Classical · Mechanical · Modern
+>
+> **category** → Substitution · Transposition · Fractionation · Product Cipher · Block Cipher · Stream Cipher · One-Time Pad
+>
+> **technique** → Shift · Monoalphabetic · Polyalphabetic · Homophonic · Polygraphic · Rail Fence · Columnar · Route · Polybius Square · Matrix · Cipher Disk · Rotor Machine · Feistel · SPN · XOR · LFSR
+>
+> **characters** → Uppercase · Lowercase · Numbers · Spaces · Punctuation · Symbols · Unicode · Binary
+>
+> **keys** → None · 1 Key · 2 Keys · Multiple Keys
+>
+> **difficulty** → ★☆☆☆☆ → ★★★★★
+>
+> **status** → Draft · Review · Complete
 # Caesar Cipher
 
 ## Overview
