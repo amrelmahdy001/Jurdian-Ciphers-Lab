@@ -1,0 +1,6 @@
+views:
+  - type: table
+    name: Table
+    groupBy:
+      property: created
+      direction: ASC

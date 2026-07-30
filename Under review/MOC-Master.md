@@ -110,7 +110,7 @@ If this is your first visit, the following reading order is recommended.
 
 ## Popular Algorithms
 
-- [[Caesar Cipher]]
+- [[caesar-cipher]]
 - [[Vigenère Cipher]]
 - [[Playfair Cipher]]
 - [[Rail Fence Cipher]]

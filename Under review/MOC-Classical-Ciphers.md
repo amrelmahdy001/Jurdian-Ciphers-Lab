@@ -36,7 +36,7 @@ updated: 2025-06-28
 ## Curated Entry Points
 
 ### Beginner-Friendly Ciphers
-- [[Caesar Cipher]] — The most well-known classical cipher
+- [[caesar-cipher]] — The most well-known classical cipher
 - [[ROT-13 Cipher]] — Caesar with shift of 13; self-inverse
 - [[Atbash Cipher]] — Alphabet reversed; no key required
 - [[Pigpen Cipher]] — Geometric symbol substitution
@@ -72,7 +72,7 @@ updated: 2025-06-28
 
 ## Historical Significance Timeline
 
-| ~50 BCE | [[Caesar Cipher]] — Julius Caesar's military cipher |
+| ~50 BCE | [[caesar-cipher]] — Julius Caesar's military cipher |
 |---|---|
 | ~600 CE | [[Atbash Cipher]] — Biblical Hebrew substitution |
 | 1467 | [[Alberti Cipher]] — First polyalphabetic cipher |

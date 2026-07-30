@@ -1,12 +1,11 @@
 ---
-title: "Cipher Identification Guide"
+title: Cipher Identification Guide
 aliases:
-  - "Cipher Identifier Quick Reference"
-  - "How to Identify a Cipher"
-  - "Unknown Cipher Guide"
+  - Cipher Identifier Quick Reference
+  - How to Identify a Cipher
+  - Unknown Cipher Guide
 type: puzzle-resource
 domain: references
-status: complete
 tags:
   - reference
   - puzzle
@@ -76,7 +75,7 @@ Check letter frequencies:
 
 - **Most frequent letter has ~10–13%** — Monoalphabetic substitution
   - If frequency distribution matches English (E=most frequent, etc.) → [[Transposition Cipher]]
-  - If frequency distribution is shifted uniformly → [[Caesar Cipher]] or [[ROT-13 Cipher]]
+  - If frequency distribution is shifted uniformly → [[caesar-cipher]] or [[ROT-13 Cipher]]
   - If distribution is shifted mathematically → [[Affine Cipher]]
   - If distribution is scrambled but letter frequencies preserved → [[Monoalphabetic Substitution Cipher]]
 

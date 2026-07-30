@@ -49,7 +49,7 @@ How this concept is used in specific ciphers or cryptographic systems.
 
 | Cipher / System | How This Concept Is Used |
 |---|---|
-| [[Caesar Cipher]] | Shift is computed mod 26 |
+| [[caesar-cipher]] | Shift is computed mod 26 |
 | [[RSA Algorithm]] | Relies on Euler's totient function |
 
 ---

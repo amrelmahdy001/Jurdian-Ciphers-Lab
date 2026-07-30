@@ -1,20 +1,20 @@
 ---
-title: "Vigenère Cipher"
+title: Vigenère Cipher
 aliases:
-  - "Vigenere Cipher"
-  - "Le Chiffre Indéchiffrable"
-  - "Polyalphabetic Substitution Cipher"
-  - "Beaufort Variant"
-category: "Classical Cipher"
-family: "Polyalphabetic Substitution"
-type: "Symmetric, Substitution"
-inventor: "Blaise de Vigenère (popularized); Giovan Battista Bellaso (original, 1553)"
-invented: "1553 (Bellaso); attributed to Vigenère in 1586"
-alphabet: "Standard 26-letter Latin alphabet (A–Z); extendable"
-key: "A repeating keyword of arbitrary length"
-security: "Negligible by modern standards; vulnerable to Kasiski examination and index of coincidence analysis"
-difficulty: "Beginner–Intermediate"
-status: "Historically significant; obsolete for secure communication"
+  - Vigenere Cipher
+  - Le Chiffre Indéchiffrable
+  - Polyalphabetic Substitution Cipher
+  - Beaufort Variant
+category: Classical Cipher
+family: Polyalphabetic Substitution
+type: Symmetric, Substitution
+inventor: Blaise de Vigenère (popularized); Giovan Battista Bellaso (original, 1553)
+invented: 1553 (Bellaso); attributed to Vigenère in 1586
+alphabet: Standard 26-letter Latin alphabet (A–Z); extendable
+key: A repeating keyword of arbitrary length
+security: Negligible by modern standards; vulnerable to Kasiski examination and index of coincidence analysis
+difficulty: Beginner–Intermediate
+status: Historically significant; obsolete for secure communication
 tags:
   - cipher
   - classical
@@ -27,7 +27,7 @@ tags:
   - kasiski
   - arg
 related:
-  - "[[Caesar Cipher]]"
+  - "[[caesar-cipher]]"
   - "[[ROT13]]"
   - "[[Beaufort Cipher]]"
   - "[[Running Key Cipher]]"
@@ -682,7 +682,7 @@ A rough rule of thumb: approximately $20 \times n$ characters (where $n$ is the 
 
 ## Related Articles
 
-- [[Caesar Cipher]]
+- [[caesar-cipher]]
 - [[ROT13]]
 - [[Atbash Cipher]]
 - [[Beaufort Cipher]]

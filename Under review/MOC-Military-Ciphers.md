@@ -34,7 +34,7 @@ Military ciphers were designed for high-stakes operational security under field 
 
 ### Ancient & Medieval
 - [[Scytale Cipher]] — Spartan military cipher, ~700 BCE
-- [[Caesar Cipher]] — Julius Caesar's military communications, ~50 BCE
+- [[caesar-cipher]] — Julius Caesar's military communications, ~50 BCE
 
 ### American Civil War
 - [[Union Route Cipher]] — Used by Union Army; route transposition

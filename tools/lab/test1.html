@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caesar Cipher — Jurdian Ciphers Lab</title>
+
+    <!-- ==============================
+    DESIGN SYSTEM
+    ==============================
+    Color Palette:
+      --color-bg:            #FAFAFA   (page background)
+      --color-surface:       #FFFFFF   (card backgrounds)
+      --color-border:        #E5E5E5   (borders, dividers)
+      --color-border-light:  #F0F0F0   (subtle borders)
+      --color-text-primary:  #0F0F0F   (headings, body text)
+      --color-text-secondary:#555555   (secondary text)
+      --color-text-tertiary: #888888   (muted text, placeholders)
+      --color-accent:        #FFD54A   (primary accent yellow)
+      --color-accent-hover:  #FFC107   (darker yellow on hover)
+      --color-accent-subtle: #FFF8E1   (very subtle yellow background)
+      --color-code-bg:       #F5F5F5   (inline code / code block bg)
+      --color-success:       #2E7D32   (success toast)
+      --color-error:         #C62828   (error toast)
+      --color-info:          #1A1A1A   (info toast)
+      --color-keyboard:      #F2F2F2   (keyboard shortcut badge)
+
+    Typography:
+      --font-sans:  -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                    'Helvetica Neue', Arial, sans-serif;
+      --font-mono:  'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono',
+                    'JetBrains Mono', Consolas, 'Liberation Mono', monospace;
+
+    Spacing (4px base unit):
+      4, 8, 12, 16, 20, 24, 28, 32, 40, 48, 56, 64
+
+    Border Radius: 4px (small), 6px (cards), 8px (modals)
+    Shadows:       Minimal — only subtle elevation for cards and modals.
+                   No heavy shadows, no glassmorphism.
+    ============================== -->
+
+    <style>
+        /* ==============================
+           CSS CUSTOM PROPERTIES (Design Tokens)
+           ============================== */
+        :root {
+            /* Colors */
+            --color-bg: #FAFAFA;
+            --color-surface: #FFFFFF;
+            --color-border: #E5E5E5;
+            --color-border-light: #F0F0F0;
+            --color-text-primary: #0F0F0F;
+            --color-text-secondary: #555555;
+            --color-text-tertiary: #888888;
+            --color-accent: #FFD54A;
+            --color-accent-hover: #FFC107;
+            --color-accent-subtle: #FFF8E1;
+            --color-code-bg: #F5F5F5;
+            --color-success: #2E7D32;
+            --color-error: #C62828;
+            --color-info: #1A1A1A;
+            --color-keyboard: #F2F2F2;
+            --color-overlay: rgba(0, 0, 0, 0.45);
+
+            /* Typography */
+            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                'Helvetica Neue', Arial, sans-serif;
+            --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono',
+                'JetBrains Mono', Consolas, 'Liberation Mono', monospace;
+
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 12px;
+            --space-lg: 16px;
+            --space-xl: 20px;
+            --space-2xl: 24px;
+            --space-3xl: 32px;
+            --space-4xl: 40px;
+            --space-5xl: 48px;
+            --space-6xl: 64px;
+
+            /* Border Radius */
+            --radius-sm: 4px;
+            --radius-md: 6px;
+            --radius-lg: 8px;
+
+            /* Shadows (minimal, flat-design appropriate) */
+            --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.03);
+            --shadow-modal: 0 4px 24px rgba(0, 0, 0, 0.10);
+            --shadow-toast: 0 2px 12px rgba(0, 0, 0, 0.10);
+
+            /* Transitions */
+            --transition-fast: 120ms ease;
+            --transition-base: 180ms ease;
+
+            /* Layout */
+            --header-height: auto;
+            --sidebar-width: 280px;
+            --content-max-width: 960px;
+            --page-max-width: 1280px;
+        }
+
+        /* ==============================
+           RESET & BASE
+           ============================== */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-bg);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ==============================
+           FOCUS STYLES (Accessibility)
+           ============================== */
+        :focus-visible {
+            outline: 2px solid var(--color-accent);
+            outline-offset: 2px;
+            border-radius: var(--radius-sm);
+        }
+        :focus:not(:focus-visible) {
+            outline: none;
+        }
+
+        /* ==============================
+           LAYOUT
+           ============================== */
+        .app-container {
+            max-width: var(--page-max-width);
+            margin: 0 auto;
+            padding: 0 var(--space-2xl);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ---- Header ---- */
+        .header {
+            padding-top: var(--space-3xl);
+            padding-bottom: var(--space-2xl);
+            border-bottom: 1px solid var(--color-border);
+            margin-bottom: var(--space-3xl);
+        }
+
+        .header .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+            font-size: 0.8125rem;
+            color: var(--color-text-tertiary);
+            margin-bottom: var(--space-md);
+            list-style: none;
+        }
+        .header .breadcrumb li {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        .header .breadcrumb li+li::before {
+            content: '/';
+            color: var(--color-border);
+            font-size: 0.75rem;
+            margin-right: var(--space-sm);
+        }
+        .header .breadcrumb a {
+            color: var(--color-text-tertiary);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+            border-radius: var(--radius-sm);
+            padding: 2px 4px;
+            margin: -2px -4px;
+        }
+        .header .breadcrumb a:hover {
+            color: var(--color-text-primary);
+            text-decoration: underline;
+        }
+        .header .breadcrumb .current {
+            color: var(--color-text-primary);
+            font-weight: 600;
+        }
+
+        .header .tool-title {
+            font-family: var(--font-sans);
+            font-size: 1.75rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-sm);
+            line-height: 1.2;
+        }
+        .header .tool-description {
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        /* ---- Main Layout (content + sidebar) ---- */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr var(--sidebar-width);
+            gap: var(--space-3xl);
+            flex: 1;
+            padding-bottom: var(--space-6xl);
+        }
+
+        .content {
+            min-width: 0;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-xl);
+        }
+
+        /* ==============================
+           CARDS
+           ============================== */
+        .card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: var(--space-xl) var(--space-2xl);
+            box-shadow: var(--shadow-card);
+        }
+        .card--sm {
+            padding: var(--space-lg) var(--space-xl);
+        }
+        .card__title {
+            font-size: 0.8125rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--color-text-tertiary);
+            margin-bottom: var(--space-md);
+        }
+        .card__body {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            line-height: 1.55;
+        }
+        .card__body p+p {
+            margin-top: var(--space-sm);
+        }
+
+        /* ---- Tool Card (main) ---- */
+        .tool-card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            margin-bottom: var(--space-3xl);
+        }
+
+        .tool-card__header {
+            padding: var(--space-lg) var(--space-2xl);
+            border-bottom: 1px solid var(--color-border-light);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+        }
+        .tool-card__body {
+            padding: var(--space-2xl);
+        }
+        .tool-card__footer {
+            padding: var(--space-lg) var(--space-2xl);
+            border-top: 1px solid var(--color-border-light);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+        }
+
+        /* ==============================
+           TABS
+           ============================== */
+        .tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 2px solid var(--color-border-light);
+            margin-bottom: 0;
+            list-style: none;
+        }
+        .tabs__tab {
+            padding: var(--space-md) var(--space-xl);
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--color-text-tertiary);
+            cursor: pointer;
+            border: none;
+            background: none;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: color var(--transition-fast), border-color var(--transition-fast);
+            font-family: var(--font-sans);
+            white-space: nowrap;
+            border-radius: 0;
+        }
+        .tabs__tab:hover {
+            color: var(--color-text-primary);
+        }
+        .tabs__tab--active {
+            color: var(--color-text-primary);
+            font-weight: 600;
+            border-bottom-color: var(--color-accent);
+        }
+        .tabs__panel {
+            display: none;
+            padding: 0;
+        }
+        .tabs__panel--active {
+            display: block;
+        }
+
+        /* ==============================
+           INPUT / OUTPUT PANELS
+           ============================== */
+        .panel-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-2xl);
+        }
+        .panel {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-md);
+        }
+        .panel__label {
+            font-size: 0.8125rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--color-text-tertiary);
+        }
+        .panel__textarea {
+            width: 100%;
+            min-height: 160px;
+            padding: var(--space-md) var(--space-lg);
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            resize: vertical;
+            transition: border-color var(--transition-fast);
+        }
+        .panel__textarea:focus {
+            border-color: var(--color-accent);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 213, 74, 0.15);
+        }
+        .panel__textarea--output {
+            background: var(--color-code-bg);
+            cursor: default;
+        }
+        .panel__textarea::placeholder {
+            color: var(--color-text-tertiary);
+            font-family: var(--font-sans);
+            font-size: 0.8125rem;
+        }
+
+        /* ==============================
+           TOOL-SPECIFIC CONTROLS
+           ============================== */
+        .controls-row {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+            flex-wrap: wrap;
+            padding: var(--space-lg) 0;
+            border-top: 1px solid var(--color-border-light);
+            border-bottom: 1px solid var(--color-border-light);
+            margin: var(--space-md) 0;
+        }
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        .control-group__label {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            white-space: nowrap;
+        }
+
+        /* ==============================
+           FORM ELEMENTS (Inputs, Dropdowns, Checkboxes, Radios)
+           ============================== */
+
+        /* Text input */
+        .input {
+            padding: var(--space-sm) var(--space-md);
+            font-family: var(--font-sans);
+            font-size: 0.875rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            transition: border-color var(--transition-fast);
+            height: 36px;
+            min-width: 60px;
+        }
+        .input:focus {
+            border-color: var(--color-accent);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 213, 74, 0.15);
+        }
+        .input--small {
+            width: 64px;
+            text-align: center;
+        }
+
+        /* Number input */
+        .input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+        .input[type="number"]::-webkit-inner-spin-button,
+        .input[type="number"]::-webkit-outer-spin-button {
+            opacity: 1;
+            height: 28px;
+        }
+
+        /* Dropdown / Select */
+        .select {
+            padding: var(--space-sm) var(--space-3xl) var(--space-sm) var(--space-md);
+            font-family: var(--font-sans);
+            font-size: 0.875rem;
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            cursor: pointer;
+            transition: border-color var(--transition-fast);
+            height: 36px;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 12px;
+        }
+        .select:focus {
+            border-color: var(--color-accent);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 213, 74, 0.15);
+        }
+
+        /* Checkbox & Radio */
+        .checkbox-label,
+        .radio-label {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            user-select: none;
+        }
+        .checkbox-label input[type="checkbox"],
+        .radio-label input[type="radio"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border: 1.5px solid var(--color-border);
+            border-radius: 3px;
+            background: var(--color-surface);
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            transition: all var(--transition-fast);
+        }
+        .radio-label input[type="radio"] {
+            border-radius: 50%;
+        }
+        .checkbox-label input[type="checkbox"]:checked {
+            background-color: var(--color-accent);
+            border-color: var(--color-accent);
+        }
+        .checkbox-label input[type="checkbox"]:checked::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 1px;
+            width: 5px;
+            height: 9px;
+            border: solid #0F0F0F;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        .radio-label input[type="radio"]:checked {
+            border-color: var(--color-accent);
+            background: var(--color-surface);
+        }
+        .radio-label input[type="radio"]:checked::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            border-radius: 50%;
+            background: var(--color-accent);
+        }
+        .checkbox-label:hover input,
+        .radio-label:hover input {
+            border-color: var(--color-text-tertiary);
+        }
+
+        /* ==============================
+           BUTTONS
+           ============================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-lg);
+            font-family: var(--font-sans);
+            font-size: 0.8125rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: all var(--transition-fast);
+            white-space: nowrap;
+            height: 36px;
+            text-decoration: none;
+            line-height: 1;
+            user-select: none;
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn--primary {
+            background: var(--color-accent);
+            color: #0F0F0F;
+            border-color: var(--color-accent);
+            font-weight: 700;
+        }
+        .btn--primary:hover {
+            background: var(--color-accent-hover);
+            border-color: var(--color-accent-hover);
+        }
+
+        .btn--secondary {
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            border-color: var(--color-border);
+        }
+        .btn--secondary:hover {
+            background: #F9F9F9;
+            border-color: #CCC;
+        }
+
+        .btn--ghost {
+            background: transparent;
+            color: var(--color-text-secondary);
+            border-color: transparent;
+        }
+        .btn--ghost:hover {
+            background: #F5F5F5;
+            color: var(--color-text-primary);
+        }
+
+        .btn--small {
+            padding: var(--space-xs) var(--space-md);
+            font-size: 0.75rem;
+            height: 30px;
+        }
+        .btn--icon {
+            width: 36px;
+            padding: 0;
+            justify-content: center;
+        }
+        .btn svg {
+            flex-shrink: 0;
+        }
+
+        /* ==============================
+           ACCORDION (Collapsible Panels)
+           ============================== */
+        .accordion {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            margin-top: var(--space-2xl);
+        }
+        .accordion__item {
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            background: var(--color-surface);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+        }
+        .accordion__trigger {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-lg) var(--space-xl);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            text-align: left;
+            gap: var(--space-md);
+            transition: background var(--transition-fast);
+            border-radius: 0;
+        }
+        .accordion__trigger:hover {
+            background: #FAFAFA;
+        }
+        .accordion__trigger:focus-visible {
+            outline: 2px solid var(--color-accent);
+            outline-offset: -2px;
+            border-radius: var(--radius-md);
+        }
+        .accordion__icon {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            transition: transform var(--transition-base);
+            color: var(--color-text-tertiary);
+        }
+        .accordion__item--open .accordion__icon {
+            transform: rotate(180deg);
+            color: var(--color-accent);
+        }
+        .accordion__panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease, padding 0.35s ease;
+        }
+        .accordion__item--open .accordion__panel {
+            max-height: 2000px;
+        }
+        .accordion__content {
+            padding: 0 var(--space-xl) var(--space-xl);
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            line-height: 1.65;
+        }
+        .accordion__content p+p {
+            margin-top: var(--space-md);
+        }
+
+        /* ==============================
+           CODE BLOCK
+           ============================== */
+        .code-block {
+            background: var(--color-code-bg);
+            border: 1px solid var(--color-border-light);
+            border-radius: var(--radius-sm);
+            padding: var(--space-lg) var(--space-xl);
+            font-family: var(--font-mono);
+            font-size: 0.8125rem;
+            line-height: 1.7;
+            overflow-x: auto;
+            color: var(--color-text-primary);
+            white-space: pre;
+            margin: var(--space-md) 0;
+        }
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.8125rem;
+            background: var(--color-code-bg);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: var(--color-text-primary);
+        }
+
+        /* ==============================
+           TABLE
+           ============================== */
+        .table-wrapper {
+            overflow-x: auto;
+            margin: var(--space-md) 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8125rem;
+        }
+        table th,
+        table td {
+            padding: var(--space-sm) var(--space-md);
+            text-align: left;
+            border-bottom: 1px solid var(--color-border-light);
+        }
+        table th {
+            font-weight: 700;
+            color: var(--color-text-primary);
+            background: #FAFAFA;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        table tr:hover td {
+            background: #FDFDFD;
+        }
+        table td {
+            color: var(--color-text-secondary);
+        }
+
+        /* ==============================
+           SIDEBAR COMPONENTS
+           ============================== */
+        .sidebar .card__body dl {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: var(--space-xs) var(--space-md);
+            font-size: 0.8125rem;
+        }
+        .sidebar .card__body dt {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            white-space: nowrap;
+        }
+        .sidebar .card__body dd {
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        .related-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .related-links a {
+            display: block;
+            padding: var(--space-sm) var(--space-md);
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+            margin: 0 calc(-1 * var(--space-md));
+        }
+        .related-links a:hover {
+            background: #F9F9F9;
+            color: var(--color-text-primary);
+        }
+
+        /* ==============================
+           KEYBOARD SHORTCUT HINT
+           ============================== */
+        .kbd {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 22px;
+            height: 20px;
+            padding: 0 5px;
+            font-family: var(--font-sans);
+            font-size: 0.6875rem;
+            font-weight: 600;
+            color: var(--color-text-tertiary);
+            background: var(--color-keyboard);
+            border: 1px solid var(--color-border);
+            border-radius: 3px;
+            letter-spacing: 0.02em;
+            line-height: 1;
+        }
+        .shortcut-hint {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.75rem;
+            color: var(--color-text-tertiary);
+        }
+
+        /* ==============================
+           TOAST NOTIFICATIONS
+           ============================== */
+        .toast-container {
+            position: fixed;
+            top: var(--space-xl);
+            right: var(--space-xl);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+            pointer-events: none;
+        }
+        .toast {
+            pointer-events: auto;
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+            padding: var(--space-md) var(--space-lg);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-toast);
+            font-size: 0.8125rem;
+            color: var(--color-text-primary);
+            max-width: 380px;
+            animation: toast-slide-in 0.25s ease forwards;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .toast--removing {
+            opacity: 0;
+            transform: translateX(40px);
+        }
+        .toast--success {
+            border-left: 3px solid var(--color-success);
+        }
+        .toast--error {
+            border-left: 3px solid var(--color-error);
+        }
+        .toast--info {
+            border-left: 3px solid var(--color-info);
+        }
+        .toast__dismiss {
+            flex-shrink: 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--color-text-tertiary);
+            font-size: 1rem;
+            line-height: 1;
+            padding: 0;
+            margin-left: auto;
+            transition: color var(--transition-fast);
+        }
+        .toast__dismiss:hover {
+            color: var(--color-text-primary);
+        }
+
+        @keyframes toast-slide-in {
+            from {
+                opacity: 0;
+                transform: translateX(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* ==============================
+           MODAL
+           ============================== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--color-overlay);
+            z-index: 9000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-2xl);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        .modal-overlay--open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-modal);
+            width: 100%;
+            max-width: 520px;
+            max-height: 80vh;
+            overflow-y: auto;
+            transform: translateY(8px);
+            transition: transform 0.2s ease;
+        }
+        .modal-overlay--open .modal {
+            transform: translateY(0);
+        }
+        .modal__header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--space-xl) var(--space-2xl);
+            border-bottom: 1px solid var(--color-border-light);
+        }
+        .modal__title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+        .modal__close {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.25rem;
+            color: var(--color-text-tertiary);
+            padding: var(--space-xs);
+            border-radius: var(--radius-sm);
+            line-height: 1;
+            transition: color var(--transition-fast);
+        }
+        .modal__close:hover {
+            color: var(--color-text-primary);
+        }
+        .modal__body {
+            padding: var(--space-2xl);
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+        }
+        .modal__footer {
+            padding: var(--space-lg) var(--space-2xl);
+            border-top: 1px solid var(--color-border-light);
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--space-sm);
+        }
+
+        /* ==============================
+           UTILITY CLASSES
+           ============================== */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        .text-mono {
+            font-family: var(--font-mono);
+        }
+        .text-accent {
+            color: var(--color-accent);
+        }
+        .mt-sm {
+            margin-top: var(--space-sm);
+        }
+        .mt-md {
+            margin-top: var(--space-md);
+        }
+        .mt-lg {
+            margin-top: var(--space-lg);
+        }
+        .mt-xl {
+            margin-top: var(--space-xl);
+        }
+        .mb-md {
+            margin-bottom: var(--space-md);
+        }
+
+        /* ==============================
+           RESPONSIVE
+           ============================== */
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: var(--space-2xl);
+            }
+            .sidebar {
+                order: 2;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: var(--space-lg);
+            }
+            .panel-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-xl);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .app-container {
+                padding: 0 var(--space-lg);
+            }
+            .header {
+                padding-top: var(--space-xl);
+                padding-bottom: var(--space-lg);
+                margin-bottom: var(--space-xl);
+            }
+            .header .tool-title {
+                font-size: 1.375rem;
+            }
+            .tool-card__body {
+                padding: var(--space-lg);
+            }
+            .tool-card__header,
+            .tool-card__footer {
+                padding: var(--space-md) var(--space-lg);
+            }
+            .controls-row {
+                gap: var(--space-md);
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .tabs__tab {
+                padding: var(--space-sm) var(--space-md);
+                font-size: 0.8125rem;
+            }
+            .card {
+                padding: var(--space-lg);
+            }
+            .accordion__trigger {
+                padding: var(--space-md) var(--space-lg);
+            }
+            .accordion__content {
+                padding: 0 var(--space-lg) var(--space-lg);
+            }
+            .sidebar {
+                grid-template-columns: 1fr;
+            }
+            .toast-container {
+                top: var(--space-sm);
+                right: var(--space-sm);
+                left: var(--space-sm);
+            }
+            .toast {
+                max-width: 100%;
+            }
+            .modal {
+                max-width: 100%;
+                margin: var(--space-lg);
+            }
+        }
+
+        @media (max-width: 400px) {
+            .btn {
+                font-size: 0.75rem;
+                padding: var(--space-xs) var(--space-md);
+                height: 32px;
+            }
+            .tool-card__footer {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .tool-card__footer .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ==============================
+    TOAST CONTAINER
+    ============================== -->
+    <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- ==============================
+    MODAL OVERLAY
+    ============================== -->
+    <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal">
+            <div class="modal__header">
+                <h2 class="modal__title" id="modalTitle">Export Configuration</h2>
+                <button class="modal__close" id="modalClose" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal__body">
+                <p>This is a reusable modal component. Use it for confirmations, exports, settings, or any dialog needed across cipher tools.</p>
+                <p class="mt-sm">Press <kbd>Esc</kbd> or click outside to close.</p>
+            </div>
+            <div class="modal__footer">
+                <button class="btn btn--secondary" id="modalCancel">Cancel</button>
+                <button class="btn btn--primary" id="modalConfirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==============================
+    APP CONTAINER
+    ============================== -->
+    <div class="app-container">
+
+        <!-- ==============================
+        HEADER
+        ============================== -->
+        <header class="header">
+            <nav aria-label="Breadcrumb">
+                <ol class="breadcrumb">
+                    <li><a href="#">Jurdian Ciphers Lab</a></li>
+                    <li><a href="#">Classical Ciphers</a></li>
+                    <li><a href="#">Substitution Ciphers</a></li>
+                    <li class="current" aria-current="page">Caesar Cipher</li>
+                </ol>
+            </nav>
+            <h1 class="tool-title">Caesar Cipher</h1>
+            <p class="tool-description">
+                A classical substitution cipher that shifts each letter by a fixed number of positions
+                in the alphabet. Attributed to Julius Caesar, it is one of the simplest and most
+                widely known encryption techniques.
+            </p>
+        </header>
+
+        <!-- ==============================
+        MAIN LAYOUT
+        ============================== -->
+        <div class="main-layout">
+
+            <!-- ==============================
+            MAIN CONTENT
+            ============================== -->
+            <main class="content">
+
+                <!-- ========== TOOL CARD ========== -->
+                <section class="tool-card" aria-label="Cipher tool">
+                    <!-- Tabs -->
+                    <div class="tool-card__header">
+                        <div class="tabs" role="tablist" aria-label="Cipher mode">
+                            <button class="tabs__tab tabs__tab--active" role="tab"
+                            aria-selected="true" data-tab="encrypt" id="tabEncrypt">
+                            Encrypt
+                        </button>
+                        <button class="tabs__tab" role="tab"
+                        aria-selected="false" data-tab="decrypt" id="tabDecrypt">
+                        Decrypt
+                    </button>
+                </div>
+                <span class="shortcut-hint">
+                    <kbd>Ctrl</kbd> + <kbd>Enter</kbd> to process
+                </span>
+            </div>
+
+            <!-- Tool Body -->
+            <div class="tool-card__body">
+                <!-- Tab Panels -->
+                <div class="tabs__panel tabs__panel--active" data-panel="encrypt">
+                    <div class="panel-grid">
+                        <!-- Input -->
+                        <div class="panel">
+                            <label class="panel__label" for="inputTextEncrypt">Plaintext</label>
+                            <textarea
+                            class="panel__textarea"
+                            id="inputTextEncrypt"
+                            placeholder="Enter your plaintext here... e.g. HELLO WORLD"
+                            rows="6"
+                        ></textarea>
+                    </div>
+                    <!-- Output -->
+                    <div class="panel" id="resultAreaEncrypt">
+                        <label class="panel__label" for="outputTextEncrypt">Ciphertext</label>
+                        <textarea
+                        class="panel__textarea panel__textarea--output"
+                        id="outputTextEncrypt"
+                        readonly
+                        rows="6"
+                        placeholder="Result will appear here..."
+                        aria-live="polite"
+                    ></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="tabs__panel" data-panel="decrypt">
+            <div class="panel-grid">
+                <div class="panel">
+                    <label class="panel__label" for="inputTextDecrypt">Ciphertext</label>
+                    <textarea
+                    class="panel__textarea"
+                    id="inputTextDecrypt"
+                    placeholder="Enter ciphertext here... e.g. KHOOR ZRUOG"
+                    rows="6"
+                ></textarea>
+            </div>
+            <div class="panel" id="resultAreaDecrypt">
+                <label class="panel__label" for="outputTextDecrypt">Plaintext</label>
+                <textarea
+                class="panel__textarea panel__textarea--output"
+                id="outputTextDecrypt"
+                readonly
+                rows="6"
+                placeholder="Result will appear here..."
+                aria-live="polite"
+            ></textarea>
+        </div>
+    </div>
+</div>
+
+<!-- Tool-Specific Controls -->
+<div class="controls-row">
+    <div class="control-group">
+        <label class="control-group__label" for="shiftAmount">Shift</label>
+        <input
+        type="number"
+        class="input input--small"
+        id="shiftAmount"
+        value="3"
+        min="1"
+        max="25"
+        aria-label="Shift amount"
+    />
+</div>
+<div class="control-group">
+    <label class="checkbox-label">
+        <input type="checkbox" id="preserveCase" checked />
+        Preserve case
+    </label>
+</div>
+<div class="control-group">
+    <label class="checkbox-label">
+        <input type="checkbox" id="ignoreSpaces" />
+        Ignore spaces
+    </label>
+</div>
+<div class="control-group">
+    <label class="radio-label">
+        <input type="radio" name="alphabetMode" value="standard" checked />
+        Standard (A-Z)
+    </label>
+    <label class="radio-label">
+        <input type="radio" name="alphabetMode" value="extended" />
+        Extended ASCII
+    </label>
+</div>
+<div class="control-group">
+    <label class="control-group__label" for="alphabetSelect">Alphabet</label>
+    <select class="select" id="alphabetSelect">
+        <option value="latin">Latin (A-Z)</option>
+        <option value="latin-extended">Latin Extended</option>
+        <option value="greek">Greek</option>
+        <option value="cyrillic">Cyrillic</option>
+    </select>
+</div>
+</div>
+</div>
+
+<!-- Tool Footer (Action Buttons) -->
+<div class="tool-card__footer">
+    <button class="btn btn--primary" id="btnProcess" aria-label="Process cipher">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="5 12 10 17 19 8"></polyline>
+        </svg>
+        Process
+    </button>
+    <button class="btn btn--secondary" id="btnCopy" aria-label="Copy result to clipboard">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="8" y="2" width="12" height="18" rx="2"></rect>
+            <path d="M16 2v2H4v16h2"></path>
+        </svg>
+        Copy
+    </button>
+    <button class="btn btn--secondary" id="btnDownload" aria-label="Download result as text file">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Download
+    </button>
+    <button class="btn btn--ghost" id="btnClear" aria-label="Clear all fields">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+        Clear
+    </button>
+    <span class="shortcut-hint" style="margin-left: auto;">
+        <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd> Copy
+    </span>
+</div>
+</section>
+
+<!-- ========== COLLAPSIBLE INFORMATION PANELS (Accordion) ========== -->
+<section class="accordion" aria-label="Cipher information">
+    <!-- Explanation -->
+    <div class="accordion__item accordion__item--open" id="accordionExplanation">
+        <button class="accordion__trigger" aria-expanded="true" aria-controls="panelExplanation">
+            Explanation
+            <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+        </button>
+        <div class="accordion__panel" id="panelExplanation" role="region">
+            <div class="accordion__content">
+                <p>
+                    The <strong>Caesar Cipher</strong> is a monoalphabetic substitution cipher
+                    where each letter in the plaintext is replaced by a letter some fixed number
+                    of positions down the alphabet. For example, with a right shift of 3,
+                    <code>A</code> becomes <code>D</code>, <code>B</code> becomes <code>E</code>,
+                    and so on. The cipher wraps around the end of the alphabet, so
+                    <code>X</code> becomes <code>A</code>.
+                </p>
+                <p>
+                    Despite its historical significance, the Caesar Cipher offers virtually no
+                    security by modern standards. With only 25 possible keys (excluding the
+                    identity shift of 0), it can be broken instantly via brute force.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mathematical Formula -->
+    <div class="accordion__item" id="accordionFormula">
+        <button class="accordion__trigger" aria-expanded="false" aria-controls="panelFormula">
+            Mathematical Formula
+            <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+        </button>
+        <div class="accordion__panel" id="panelFormula" role="region">
+            <div class="accordion__content">
+                <p><strong>Encryption:</strong></p>
+                <div class="code-block">E(x) = (x + k) mod 26</div>
+                <p><strong>Decryption:</strong></p>
+                <div class="code-block">D(y) = (y - k) mod 26</div>
+                <p>Where <code>x</code> is the plaintext letter index (A=0, B=1, …),
+                    <code>k</code> is the shift key, and <code>y</code> is the ciphertext
+                letter index.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Worked Example -->
+    <div class="accordion__item" id="accordionExample">
+        <button class="accordion__trigger" aria-expanded="false" aria-controls="panelExample">
+            Worked Example
+            <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+        </button>
+        <div class="accordion__panel" id="panelExample" role="region">
+            <div class="accordion__content">
+                <p>Encrypting <strong>"HELLO"</strong> with a shift of <strong>3</strong>:</p>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Plaintext</th>
+                                <th>H</th>
+                                <th>E</th>
+                                <th>L</th>
+                                <th>L</th>
+                                <th>O</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Index (0–25)</strong></td>
+                                <td>7</td>
+                                <td>4</td>
+                                <td>11</td>
+                                <td>11</td>
+                                <td>14</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Shifted Index</strong></td>
+                                <td>10</td>
+                                <td>7</td>
+                                <td>14</td>
+                                <td>14</td>
+                                <td>17</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ciphertext</strong></td>
+                                <td><strong>K</strong></td>
+                                <td><strong>H</strong></td>
+                                <td><strong>O</strong></td>
+                                <td><strong>O</strong></td>
+                                <td><strong>R</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p><strong>Result:</strong> <code>HELLO</code> → <code>KHOOR</code></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="accordion__item" id="accordionNotes">
+        <button class="accordion__trigger" aria-expanded="false" aria-controls="panelNotes">
+            Notes
+            <svg class="accordion__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+        </button>
+        <div class="accordion__panel" id="panelNotes" role="region">
+            <div class="accordion__content">
+                <ul style="padding-left: 1.25rem; display: flex; flex-direction: column; gap: 6px;">
+                    <li>The cipher is named after Julius Caesar, who used a shift of 3 for military communications.</li>
+                    <li>ROT13 is a special case of the Caesar Cipher with a shift of 13; it is its own inverse.</li>
+                    <li>The cipher preserves letter frequencies, making it vulnerable to frequency analysis.</li>
+                    <li>This tool supports both standard Latin alphabet and extended character sets.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+</main>
+
+<!-- ==============================
+SIDEBAR
+============================== -->
+<aside class="sidebar">
+    <!-- Tool Information Card -->
+    <div class="card card--sm">
+        <h3 class="card__title">Tool Information</h3>
+        <div class="card__body">
+            <dl>
+                <dt>Tool</dt>
+                <dd>Caesar Cipher</dd>
+                <dt>Version</dt>
+                <dd>1.0.0</dd>
+                <dt>Category</dt>
+                <dd>Classical / Substitution</dd>
+                <dt>Last Updated</dt>
+                <dd>2026-07-02</dd>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Cipher Properties Card -->
+    <div class="card card--sm">
+        <h3 class="card__title">Cipher Properties</h3>
+        <div class="card__body">
+            <dl>
+                <dt>Type</dt>
+                <dd>Monoalphabetic Substitution</dd>
+                <dt>Key Space</dt>
+                <dd>25 (for Latin A-Z)</dd>
+                <dt>Period</dt>
+                <dd>Classical (pre-1900)</dd>
+                <dt>Security</dt>
+                <dd>Broken (trivial)</dd>
+                <dt>Notable Variant</dt>
+                <dd>ROT13</dd>
+            </dl>
+        </div>
+    </div>
+
+    <!-- Related Articles Card -->
+    <div class="card card--sm">
+        <h3 class="card__title">Related Ciphers</h3>
+        <div class="card__body" style="padding: 0;">
+            <ul class="related-links">
+                <li><a href="#">Atbash Cipher</a></li>
+                <li><a href="#">ROT13 Cipher</a></li>
+                <li><a href="#">Vigenère Cipher</a></li>
+                <li><a href="#">Affine Cipher</a></li>
+                <li><a href="#">Keyword Cipher</a></li>
+                <li><a href="#">Polybius Square</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Demo Modal Trigger Card -->
+    <div class="card card--sm">
+        <h3 class="card__title">Actions</h3>
+        <div class="card__body">
+            <button class="btn btn--secondary btn--small" id="btnOpenModal">
+                Open Export Dialog
+            </button>
+        </div>
+    </div>
+</aside>
+</div>
+</div>
+
+<!-- ==============================
+JAVASCRIPT
+============================== -->
+<script>
+    (function() {
+        'use strict';
+
+        // ==============================
+        // DOM REFERENCES
+        // ==============================
+        const toastContainer = document.getElementById('toastContainer');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalClose = document.getElementById('modalClose');
+        const modalCancel = document.getElementById('modalCancel');
+        const modalConfirm = document.getElementById('modalConfirm');
+        const btnOpenModal = document.getElementById('btnOpenModal');
+        const btnProcess = document.getElementById('btnProcess');
+        const btnCopy = document.getElementById('btnCopy');
+        const btnDownload = document.getElementById('btnDownload');
+        const btnClear = document.getElementById('btnClear');
+
+        // ==============================
+        // TOAST SYSTEM
+        // ==============================
+        /**
+         * Show a toast notification.
+         * @param {string} message - The message text.
+         * @param {'success'|'error'|'info'} type - Toast type.
+         * @param {number} duration - Auto-dismiss duration in ms (0 = sticky).
+         */
+        function showToast(message, type = 'info', duration = 3500) {
+            const toast = document.createElement('div');
+            toast.className = `toast toast--${type}`;
+            toast.setAttribute('role', 'status');
+            toast.innerHTML = `
+            <span>${escapeHTML(message)}</span>
+            <button class="toast__dismiss" aria-label="Dismiss notification">&times;</button>
+          `;
+
+            const dismissBtn = toast.querySelector('.toast__dismiss');
+            const remove = () => {
+                toast.classList.add('toast--removing');
+                toast.addEventListener('transitionend', () => {
+                    if (toast.parentNode) toast.parentNode.removeChild(toast);
+                }, { once: true });
+                // Fallback removal
+                setTimeout(() => {
+                    if (toast.parentNode) toast.parentNode.removeChild(toast);
+                }, 300);
+            };
+
+            dismissBtn.addEventListener('click', remove);
+
+            if (duration > 0) {
+                setTimeout(remove, duration);
+            }
+
+            toastContainer.appendChild(toast);
+        }
+
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // ==============================
+        // MODAL SYSTEM
+        // ==============================
+        function openModal() {
+            modalOverlay.classList.add('modal-overlay--open');
+            document.body.style.overflow = 'hidden';
+            // Focus the close button for accessibility
+            setTimeout(() => modalClose.focus(), 100);
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('modal-overlay--open');
+            document.body.style.overflow = '';
+            // Return focus to trigger element
+            if (btnOpenModal) btnOpenModal.focus();
+        }
+
+        // Close modal on overlay click
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('modal-overlay--open')) {
+                closeModal();
+            }
+        });
+
+        modalClose.addEventListener('click', closeModal);
+        modalCancel.addEventListener('click', closeModal);
+        modalConfirm.addEventListener('click', function() {
+            showToast('Configuration exported successfully.', 'success');
+            closeModal();
+        });
+        btnOpenModal.addEventListener('click', openModal);
+
+        // ==============================
+        // TAB SYSTEM
+        // ==============================
+        const tabs = document.querySelectorAll('.tabs__tab');
+        const panels = document.querySelectorAll('.tabs__panel');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const targetPanel = this.getAttribute('data-tab');
+
+                // Deactivate all tabs
+                tabs.forEach(t => {
+                    t.classList.remove('tabs__tab--active');
+                    t.setAttribute('aria-selected', 'false');
+                });
+                // Deactivate all panels
+                panels.forEach(p => p.classList.remove('tabs__panel--active'));
+
+                // Activate clicked tab
+                this.classList.add('tabs__tab--active');
+                this.setAttribute('aria-selected', 'true');
+
+                // Activate corresponding panel
+                const activePanel = document.querySelector(`[data-panel="${targetPanel}"]`);
+                if (activePanel) {
+                    activePanel.classList.add('tabs__panel--active');
+                }
+            });
+        });
+
+        // ==============================
+        // ACCORDION SYSTEM
+        // ==============================
+        const accordionTriggers = document.querySelectorAll('.accordion__trigger');
+
+        accordionTriggers.forEach(trigger => {
+            trigger.addEventListener('click', function() {
+                const item = this.closest('.accordion__item');
+                const isOpen = item.classList.contains('accordion__item--open');
+
+                // Toggle the clicked item
+                if (isOpen) {
+                    item.classList.remove('accordion__item--open');
+                    this.setAttribute('aria-expanded', 'false');
+                } else {
+                    item.classList.add('accordion__item--open');
+                    this.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
+
+        // ==============================
+        // GET CURRENT ACTIVE MODE & OUTPUT
+        // ==============================
+        function getActiveMode() {
+            const activeTab = document.querySelector('.tabs__tab--active');
+            return activeTab ? activeTab.getAttribute('data-tab') : 'encrypt';
+        }
+
+        function getActiveOutputTextarea() {
+            const mode = getActiveMode();
+            return document.getElementById(
+                mode === 'encrypt' ? 'outputTextEncrypt' : 'outputTextDecrypt'
+            );
+        }
+
+        function getActiveInputTextarea() {
+            const mode = getActiveMode();
+            return document.getElementById(
+                mode === 'encrypt' ? 'inputTextEncrypt' : 'inputTextDecrypt'
+            );
+        }
+
+        // ==============================
+        // PLACEHOLDER PROCESS (No cipher logic)
+        // ==============================
+        btnProcess.addEventListener('click', function() {
+            const input = getActiveInputTextarea();
+            const output = getActiveOutputTextarea();
+            const shift = document.getElementById('shiftAmount').value || 3;
+            const mode = getActiveMode();
+
+            if (!input.value.trim()) {
+                showToast('Please enter some text to process.', 'error');
+                output.value = '';
+                return;
+            }
+
+            // Placeholder: just echo with a note (no actual cipher logic)
+            const placeholderResult =
+                `[${mode === 'encrypt' ? 'Encrypted' : 'Decrypted'} with shift=${shift}]\n${input.value}`;
+            output.value = placeholderResult;
+            showToast(`${mode === 'encrypt' ? 'Encryption' : 'Decryption'} complete.`, 'success');
+        });
+
+        // ==============================
+        // COPY TO CLIPBOARD
+        // ==============================
+        btnCopy.addEventListener('click', function() {
+            const output = getActiveOutputTextarea();
+            const textToCopy = output.value.trim();
+
+            if (!textToCopy) {
+                showToast('Nothing to copy. Process some text first.', 'error');
+                return;
+            }
+
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showToast('Copied to clipboard.', 'success');
+            }).catch(() => {
+                // Fallback
+                output.select();
+                document.execCommand('copy');
+                showToast('Copied to clipboard.', 'success');
+            });
+        });
+
+        // ==============================
+        // DOWNLOAD AS TEXT FILE
+        // ==============================
+        btnDownload.addEventListener('click', function() {
+            const output = getActiveOutputTextarea();
+            const textToDownload = output.value.trim();
+
+            if (!textToDownload) {
+                showToast('Nothing to download. Process some text first.', 'error');
+                return;
+            }
+
+            const blob = new Blob([textToDownload], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `cipher-output-${Date.now()}.txt`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            showToast('File downloaded.', 'success');
+        });
+
+        // ==============================
+        // CLEAR FIELDS
+        // ==============================
+        btnClear.addEventListener('click', function() {
+            const input = getActiveInputTextarea();
+            const output = getActiveOutputTextarea();
+            input.value = '';
+            output.value = '';
+            input.focus();
+            showToast('Fields cleared.', 'info');
+        });
+
+        // ==============================
+        // KEYBOARD SHORTCUTS
+        // ==============================
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Enter → Process
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                btnProcess.click();
+            }
+            // Ctrl+Shift+C → Copy result
+            if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+                e.preventDefault();
+                btnCopy.click();
+            }
+            // Ctrl+Shift+X → Clear (bonus shortcut)
+            if (e.ctrlKey && e.shiftKey && e.key === 'X') {
+                e.preventDefault();
+                btnClear.click();
+            }
+        });
+
+        // ==============================
+        // INITIALIZATION
+        // ==============================
+        console.log(
+            '%c🔐 Jurdian Ciphers Lab %c— Template Ready',
+            'font-weight:bold;font-size:14px;',
+            'color:#888;'
+        );
+        console.log('%cShortcuts: Ctrl+Enter (Process) | Ctrl+Shift+C (Copy) | Ctrl+Shift+X (Clear)',
+            'font-size:11px;color:#aaa;');
+        console.log(
+            '%cThis template contains no cipher logic. It is a reusable UI scaffold for 100+ tools.',
+            'font-size:11px;color:#aaa;');
+
+    })();
+</script>
+</body>
+</html>

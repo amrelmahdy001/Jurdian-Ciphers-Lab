@@ -25,7 +25,7 @@ updated: 2025-06-28
 
 This section is about **specific encrypted artifacts**, not cipher algorithms:
 
-- [[Caesar Cipher]] is a cipher *algorithm* → lives in [[MOC-Shift-Ciphers]]
+- [[caesar-cipher]] is a cipher *algorithm* → lives in [[MOC-Shift-Ciphers]]
 - A specific Caesar-encrypted message from Julius Caesar would be a *historical cipher instance* → lives here
 
 Most historical cipher instances use known algorithms applied to real historical messages. The puzzle is the specific content, context, and key — not the algorithm itself.

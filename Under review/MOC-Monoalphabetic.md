@@ -67,7 +67,7 @@ The theoretical key space (26! ≈ 4 × 10²⁶) is enormous, but irrelevant whe
 | Cipher | Key Type | Key Space | Self-Inverse? | Notable Feature |
 |---|---|---|---|---|
 | [[Atbash Cipher]] | None | 1 | Yes | No key needed |
-| [[Caesar Cipher]] | Shift (0–25) | 25 | Only ROT-13 | Subset of monoalphabetic |
+| [[caesar-cipher]] | Shift (0–25) | 25 | Only ROT-13 | Subset of monoalphabetic |
 | [[Affine Cipher]] | Two integers (a,b) | 312 | Varies | Math-based |
 | [[Multiplicative Cipher]] | One integer (a) | 11 | Varies | Affine with b=0 |
 | [[Monoalphabetic Substitution Cipher]] | Permuted alphabet | 26! | Rarely | Maximum key space |

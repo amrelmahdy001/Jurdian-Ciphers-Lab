@@ -23,6 +23,8 @@
     "editor:cut",
     "editor:copy",
     "editor:paste",
-    "bases:insert"
-  ]
+    "bases:insert",
+    "editor:insert-table"
+  ],
+  "alwaysUpdateLinks": true
 }

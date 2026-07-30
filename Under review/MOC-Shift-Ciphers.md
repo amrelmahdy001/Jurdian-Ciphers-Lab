@@ -25,7 +25,7 @@ updated: 2025-06-28
 
 A shift cipher applies a uniform numerical offset to every letter in the plaintext. With a 26-letter alphabet, there are only 25 non-trivial keys — making all shift ciphers trivially brute-forceable.
 
-The entire family descends from the [[Caesar Cipher]]. Variants differ in which alphabet or character set they operate on, or how the shift is derived.
+The entire family descends from the [[caesar-cipher]]. Variants differ in which alphabet or character set they operate on, or how the shift is derived.
 
 **Encryption formula:** `C = (P + K) mod N`
 Where `P` = plaintext index, `K` = shift key, `N` = alphabet size.
@@ -36,7 +36,7 @@ Where `P` = plaintext index, `K` = shift key, `N` = alphabet size.
 
 ### Foundation
 - [[Shift Cipher]] — The general form; any alphabet, any shift
-- [[Caesar Cipher]] — Shift of 3 over A–Z; the canonical example
+- [[caesar-cipher]] — Shift of 3 over A–Z; the canonical example
 
 ### Fixed-Shift Variants (ROT Family)
 > All ROT ciphers are shift ciphers with a fixed key. No key is needed to decode — the name encodes the shift.
@@ -62,7 +62,7 @@ Where `P` = plaintext index, `K` = shift key, `N` = alphabet size.
 
 | Cipher | Key Space | Alphabet | Self-Inverse? |
 |---|---|---|---|
-| [[Caesar Cipher]] | 25 | A–Z | No (unless shift = 13) |
+| [[caesar-cipher]] | 25 | A–Z | No (unless shift = 13) |
 | [[ROT-13 Cipher]] | Fixed | A–Z | Yes |
 | [[ROT-47 Cipher]] | Fixed | ASCII 33–126 | Yes |
 | [[ROT-5 Cipher]] | Fixed | 0–9 | Yes |

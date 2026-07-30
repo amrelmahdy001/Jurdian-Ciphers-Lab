@@ -10,7 +10,7 @@
 ### 1.1 Shift Ciphers
 
 - [[ASCII Shift Cipher]]
-- [[Caesar Cipher]]
+- [[caesar-cipher]]
 - [[Keyed Caesar Cipher]]
 - [[Keyboard Shift Cipher]]
 - [[Progressive Caesar Cipher]]
@@ -886,7 +886,7 @@
 
 | Era | Ciphers |
 |-----|---------|
-| Ancient / Classical | [[Atbash Cipher]], [[Caesar Cipher]], [[Scytale Cipher]], [[Polybius Cipher]] |
+| Ancient / Classical | [[Atbash Cipher]], [[caesar-cipher]], [[Scytale Cipher]], [[Polybius Cipher]] |
 | Renaissance | [[Alberti Cipher]], [[Bellaso Cipher]], [[Trithemius Cipher]], [[Vigenère Cipher]] |
 | 17th–19th Century | [[Beaufort Cipher]], [[Playfair Cipher]], [[Porta Cipher]], [[Jefferson Wheel Cipher]] |
 | World War I | [[ADFGVX Cipher]], [[ADFGX Cipher]] |
@@ -900,7 +900,7 @@
 | Symptom | Likely Cipher |
 |---------|---------------|
 | All letters, same frequency distribution as plaintext | [[Transposition Cipher]] |
-| Letters only, shifted uniformly | [[Caesar Cipher]], [[ROT-13 Cipher]] |
+| Letters only, shifted uniformly | [[caesar-cipher]], [[ROT-13 Cipher]] |
 | Flat frequency distribution | [[Vigenère Cipher]], [[Beaufort Cipher]] |
 | Numbers replacing letters | [[A1Z26 Cipher]], [[Polybius Cipher]] |
 | Dots and dashes | [[Morse Code]] |
